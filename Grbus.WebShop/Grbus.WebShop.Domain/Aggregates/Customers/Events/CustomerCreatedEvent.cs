@@ -5,5 +5,10 @@ namespace Grbus.WebShop.Domain.Aggregates.Customers.Events
     public record CustomerCreatedEvent : DomainEvent
     {
         public Customer Customer { get; init; }
+
+        public CustomerCreatedEvent(Customer customer)
+        {
+            Customer = customer;
+        }
     }
 }

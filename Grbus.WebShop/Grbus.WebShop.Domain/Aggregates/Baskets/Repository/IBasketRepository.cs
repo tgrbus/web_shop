@@ -2,6 +2,10 @@
 {
     public interface IBasketRepository
     {
-        Task<Basket> GetBasketById(int id);
+        Task<Basket?> GetBasketById(string email);
+
+        Task AddBasket(Basket basket);
+
+        void UpdateBasket(Basket basket);
     }
 }

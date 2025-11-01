@@ -2,9 +2,8 @@
 {
     public interface ICustomerRepository
     {
-        Task<Customer> GetByIdAsync();
-        IQueryable<Customer> GetQueriable();
+        Task<Customer?> GetByIdAsync(string email);
         Task InsertAsync(Customer customer);
-        Task UpdateAsync(Customer customer);
+        void UpdateAsync(Customer customer);
     }
 }
