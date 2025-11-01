@@ -1,0 +1,8 @@
+{
+  "dependencies": {
+    "identityapp1": {
+      "connectionInfo": "App registration: tgrbus_app, Tenant: InfoDom d.o.o.. (infodom.hr - Microsoft Entra ID)",
+      "type": "identityapp.default"
+    }
+  }
+}

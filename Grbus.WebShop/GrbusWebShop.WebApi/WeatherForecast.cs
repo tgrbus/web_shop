@@ -1,4 +1,4 @@
-namespace Grbus.WebShop.Api
+namespace GrbusWebShop.WebApi
 {
     public class WeatherForecast
     {

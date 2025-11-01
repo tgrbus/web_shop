@@ -1,0 +1,6 @@
+@GrbusWebShop.WebApi_HostAddress = http://localhost:5023
+
+GET {{GrbusWebShop.WebApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
