@@ -1,4 +1,6 @@
-﻿namespace Grbus.WebShop.Domain.Aggregates.Baskets.Repository
+﻿using Grbus.WebShop.Domain.Common;
+
+namespace Grbus.WebShop.Domain.Aggregates.Baskets.Repository
 {
     public interface IBasketRepository
     {

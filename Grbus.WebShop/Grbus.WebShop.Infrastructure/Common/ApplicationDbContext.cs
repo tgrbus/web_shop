@@ -1,7 +1,7 @@
 ﻿using Grbus.WebShop.Domain.Common;
 using Microsoft.EntityFrameworkCore;
 
-namespace Grbus.WebShop.Infrastructure
+namespace Grbus.WebShop.Infrastructure.Common
 {
     public class ApplicationDbContext : DbContext
     {

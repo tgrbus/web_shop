@@ -1,6 +1,7 @@
 ﻿using Grbus.WebShop.Domain.Aggregates.Customers;
 using Grbus.WebShop.Domain.Aggregates.Customers.Events;
 using Grbus.WebShop.Domain.Aggregates.Customers.Repository;
+using Grbus.WebShop.Infrastructure.Common;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 
 namespace Grbus.WebShop.Infrastructure.Customers

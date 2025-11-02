@@ -1,4 +1,5 @@
 ﻿using Grbus.WebShop.Domain.Aggregates.Products;
+using Grbus.WebShop.Infrastructure.Common;
 
 namespace Grbus.WebShop.Infrastructure.Products
 {
@@ -14,6 +15,11 @@ namespace Grbus.WebShop.Infrastructure.Products
         public async Task<Product?> GetByIdAsync(int id)
         {
             return await _context.Set<Product>().FindAsync(id);
+        }
+
+        public IQueryable<Product> GetQueriable()
+        {
+            return _context.Set<Product>().AsQueryable();
         }
 
         public async Task InsertAsync(Product product)

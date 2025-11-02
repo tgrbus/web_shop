@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac" />
     <PackageReference Include="MediatR" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Grbus.WebShop.Domain\Grbus.WebShop.Domain.csproj" />
   </ItemGroup>
 
 </Project>

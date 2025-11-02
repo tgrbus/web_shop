@@ -34,10 +34,5 @@ namespace GrbusWebShop.WebApi.Controllers
         {
         }
 
-        // DELETE api/<BasketController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

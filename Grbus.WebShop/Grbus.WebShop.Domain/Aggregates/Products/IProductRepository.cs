@@ -4,6 +4,7 @@
     {
         Task<Product?> GetByIdAsync(int id);
         Task InsertAsync(Product product);
+        IQueryable<Product> GetQueriable();
         void Update(Product product);
     }
 }

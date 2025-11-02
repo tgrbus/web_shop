@@ -1,5 +1,6 @@
 ﻿using Grbus.WebShop.Domain.Aggregates.Baskets;
 using Grbus.WebShop.Domain.Aggregates.Baskets.Repository;
+using Grbus.WebShop.Infrastructure.Common;
 
 namespace Grbus.WebShop.Infrastructure.Baskets
 {
