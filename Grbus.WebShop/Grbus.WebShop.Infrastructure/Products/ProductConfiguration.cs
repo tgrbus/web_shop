@@ -14,7 +14,9 @@ namespace Grbus.WebShop.Infrastructure.Products
             
             builder.Property(p => p.Name).IsRequired().HasMaxLength(200);
             builder.Property(p => p.Description).HasMaxLength(1000);
+            builder.Property(p => p.SKU).IsRequired().HasMaxLength(50);
             builder.Property(p => p.Price).IsRequired().HasColumnType("decimal(18,2)");
+            builder.Property(p => p.TaxPercentage).IsRequired().HasColumnType("decimal(5,2)");
             builder.Property(p => p.StockQuantity).IsRequired();           
             
             
@@ -27,6 +29,7 @@ namespace Grbus.WebShop.Infrastructure.Products
                     Name = "Sample Product 01",
                     Description = "This is a sample product.",
                     Price = 19.99m,
+                    TaxPercentage = 25m,
                     StockQuantity = 100
                 },
                 new Product
@@ -36,6 +39,7 @@ namespace Grbus.WebShop.Infrastructure.Products
                     Name = "Sample Product 02",
                     Description = "This is another sample product.",
                     Price = 29.99m,
+                    TaxPercentage = 25m,
                     StockQuantity = 50
                 });
         }

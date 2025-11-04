@@ -1,4 +1,5 @@
 ﻿using Grbus.WebShop.Domain.Aggregates.Baskets;
+using Grbus.WebShop.Domain.Aggregates.Baskets.Events;
 using Grbus.WebShop.Domain.Aggregates.Baskets.Repository;
 using Grbus.WebShop.Infrastructure.Common;
 
@@ -13,23 +14,13 @@ namespace Grbus.WebShop.Infrastructure.Baskets
             _context = context;
         }        
 
-        public async Task<Basket?> GetBasketById(string email)
+        public async Task<Basket?> GetBasketByIdAsync(string email)
         {
-            var basket = await _context.Set<Basket>().FindAsync(email);
-            if (basket != null)
-            {
-                var basketItems = _context.Set<BasketItem>()
-                        .Where(bi => bi.BasketId == email)
-                        .Where(bi => bi.Active)
-                        .Where(bi => bi.Quantity > 0)
-                        .ToList();
-
-                basket.AddBasketItemsList(basketItems);
-            }
+            var basket = await _context.Set<Basket>().FindAsync(email);           
             return basket;
         }
 
-        public async Task AddBasket(Basket basket)
+        public async Task AddBasketAsync(Basket basket)
         {
             await _context.Set<Basket>().AddAsync(basket);
         }
@@ -37,6 +28,18 @@ namespace Grbus.WebShop.Infrastructure.Baskets
         public void UpdateBasket(Basket basket)
         {
             _context.Set<Basket>().Update(basket);
+        }
+
+        public async Task AddHistoryAsync(BasketItemChangedEvent @event)
+        {
+            var history = new BasketHistory
+            {
+                Email = @event.BasketItem.BasketId,
+                ProductId = @event.BasketItem.ProductId,
+                Quantity = @event.BasketItem.Quantity,
+                Timestamp = @event.OccurredOn
+            };
+            await _context.Set<BasketHistory>().AddAsync(history);
         }
     }
 }

@@ -16,9 +16,6 @@ namespace Grbus.WebShop.Infrastructure.Baskets
             builder.Property(bi => bi.BasketId).IsRequired();
             builder.Property(bi => bi.Quantity).IsRequired();
             builder.Property(bi => bi.ProductId).IsRequired();
-            builder.Property(bi => bi.Active).IsRequired();
-            builder.Property(bi => bi.CreatedAt).IsRequired();
-            builder.Property(bi => bi.DeactivatedAt);
 
             builder.HasOne<Product>()
                    .WithMany()

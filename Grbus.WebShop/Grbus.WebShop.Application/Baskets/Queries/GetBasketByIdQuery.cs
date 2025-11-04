@@ -27,7 +27,7 @@ namespace Grbus.WebShop.Application.Baskets.Queries
 
         public async Task<Result<BasketDto>> Handle(GetBasketByIdQuery request, CancellationToken cancellationToken)
         {
-            var basket = await _basketRepo.GetBasketById(request.CustomerEmail);
+            var basket = await _basketRepo.GetBasketByIdAsync(request.CustomerEmail);
 
             if(basket == null)
             {
@@ -47,6 +47,7 @@ namespace Grbus.WebShop.Application.Baskets.Queries
                                 {
                                     Id = p.Id,
                                     Name = p.Name,
+                                    SKU = p.SKU,
                                     Description = p.Description,
                                     Price = p.Price,
                                 }

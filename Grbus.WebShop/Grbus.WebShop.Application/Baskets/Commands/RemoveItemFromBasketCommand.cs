@@ -5,32 +5,31 @@ using MediatR;
 
 namespace Grbus.WebShop.Application.Baskets.Commands
 {
-    public record AddItemsToBasketCommand : IRequest<Result>
+    public record RemoveItemFromBasketCommand : IRequest<Result>
     {
-        public required string CustomerEmail { get; init; }
+        public required string BasketEmail { get; init; }
         public int ProductId { get; init; }
-        public int Quantity { get; init; }
     }
 
-    public class AddItemsToBasketCommandHandler : IRequestHandler<AddItemsToBasketCommand, Result>
+    public class RemoveItemFromBasketCommandHandler : IRequestHandler<RemoveItemFromBasketCommand, Result>
     {
         private readonly IBasketRepository _basketRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddItemsToBasketCommandHandler(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
+        public RemoveItemFromBasketCommandHandler(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
         {
             _basketRepo = basketRepo;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result> Handle(AddItemsToBasketCommand request, CancellationToken cancellationToken)
+
+        public async Task<Result> Handle(RemoveItemFromBasketCommand command, CancellationToken ct)
         {
-            var basket = await _basketRepo.GetBasketByIdAsync(request.CustomerEmail);
+            var basket = await _basketRepo.GetBasketByIdAsync(command.BasketEmail);
             if (basket == null)
             {
                 return Result.Failure(ErrorLists.BasketNotFound);
             }
-
-            basket.AddProduct(request.ProductId, request.Quantity);
+            basket.RemoveProduct(command.ProductId);
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success();

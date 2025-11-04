@@ -1,13 +1,16 @@
-﻿using Grbus.WebShop.Domain.Common;
+﻿using Grbus.WebShop.Domain.Aggregates.Baskets.Events;
+using Grbus.WebShop.Domain.Common;
 
 namespace Grbus.WebShop.Domain.Aggregates.Baskets.Repository
 {
     public interface IBasketRepository
     {
-        Task<Basket?> GetBasketById(string email);
+        Task<Basket?> GetBasketByIdAsync(string email);
 
-        Task AddBasket(Basket basket);
+        Task AddBasketAsync(Basket basket);
 
         void UpdateBasket(Basket basket);
+
+        Task AddHistoryAsync(BasketItemChangedEvent @event);
     }
 }

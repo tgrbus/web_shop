@@ -9,14 +9,18 @@ namespace Grbus.WebShop.Application.Customers.EventHandlers
     public class CustomerCreatedEventHandler : INotificationHandler<DomainEventNotification<CustomerCreatedEvent>>
     {
         private readonly IBasketRepository _basketRepo;
+        public CustomerCreatedEventHandler(IBasketRepository basketRepo)
+        {
+            _basketRepo = basketRepo;
+        }
 
         public async Task Handle(DomainEventNotification<CustomerCreatedEvent> notification, CancellationToken cancellationToken)
         {
             var customerEvent = notification.DomainEvent;
-            var basket = await _basketRepo.GetBasketById(customerEvent.Customer.Email);
+            var basket = await _basketRepo.GetBasketByIdAsync(customerEvent.Customer.Email);
             if (basket == null)
             {
-                await _basketRepo.AddBasket(new Basket { CustomerEmail = customerEvent.Customer.Email });
+                await _basketRepo.AddBasketAsync(new Basket { CustomerEmail = customerEvent.Customer.Email });
             }
         }
     }

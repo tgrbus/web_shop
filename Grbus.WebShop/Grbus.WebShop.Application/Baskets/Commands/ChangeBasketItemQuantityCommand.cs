@@ -5,32 +5,33 @@ using MediatR;
 
 namespace Grbus.WebShop.Application.Baskets.Commands
 {
-    public record AddItemsToBasketCommand : IRequest<Result>
+    public record ChangeBasketItemQuantityCommand : IRequest<Result>
     {
         public required string CustomerEmail { get; init; }
-        public int ProductId { get; init; }
+        public int ProductID { get; init; }
         public int Quantity { get; init; }
     }
 
-    public class AddItemsToBasketCommandHandler : IRequestHandler<AddItemsToBasketCommand, Result>
+    public class ChangeBasketItemQuantityCommandHandler : IRequestHandler<ChangeBasketItemQuantityCommand, Result>
     {
         private readonly IBasketRepository _basketRepo;
         private readonly IUnitOfWork _unitOfWork;
 
-        public AddItemsToBasketCommandHandler(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
+        public ChangeBasketItemQuantityCommandHandler(IBasketRepository basketRepo, IUnitOfWork unitOfWork)
         {
             _basketRepo = basketRepo;
             _unitOfWork = unitOfWork;
         }
-        public async Task<Result> Handle(AddItemsToBasketCommand request, CancellationToken cancellationToken)
+
+        public async Task<Result> Handle(ChangeBasketItemQuantityCommand command, CancellationToken ct)
         {
-            var basket = await _basketRepo.GetBasketByIdAsync(request.CustomerEmail);
-            if (basket == null)
+            var basket = await _basketRepo.GetBasketByIdAsync(command.CustomerEmail);
+            if(basket == null)
             {
                 return Result.Failure(ErrorLists.BasketNotFound);
             }
 
-            basket.AddProduct(request.ProductId, request.Quantity);
+            basket.IncreaseOrDecreaseQuantity(command.ProductID, command.Quantity);
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success();
