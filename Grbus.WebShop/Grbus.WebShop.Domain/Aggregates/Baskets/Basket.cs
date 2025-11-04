@@ -7,7 +7,12 @@ namespace Grbus.WebShop.Domain.Aggregates.Baskets
     {
         public required string CustomerEmail { get; set; }
 
-        public List<BasketItem> BasketItems { get; private set; } = [];
+        public virtual ICollection<BasketItem> BasketItems { get; private set; }
+
+        public Basket()
+        {
+            BasketItems = new HashSet<BasketItem>();
+        }
 
         public List<DomainEvent> DomainEvents { get; set; } = [];
 
@@ -43,6 +48,8 @@ namespace Grbus.WebShop.Domain.Aggregates.Baskets
             {
                 var existingItem = BasketItems.Single(bi => bi.ProductId == productId);
                 BasketItems.Remove(existingItem);
+                existingItem.Quantity = 0;
+                DomainEvents.Add(new BasketItemChangedEvent(existingItem));
             }
         }
 

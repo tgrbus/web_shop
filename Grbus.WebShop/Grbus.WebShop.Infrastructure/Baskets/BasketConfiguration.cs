@@ -11,6 +11,7 @@ namespace Grbus.WebShop.Infrastructure.Baskets
             builder.ToTable("Basket");
 
             builder.HasKey(x => x.CustomerEmail);
+            builder.Property(x => x.CustomerEmail).HasMaxLength(255); 
 
             builder.HasMany(x => x.BasketItems).WithOne().HasForeignKey(s => s.BasketId);
 

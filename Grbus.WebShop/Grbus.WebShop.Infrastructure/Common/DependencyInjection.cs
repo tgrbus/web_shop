@@ -1,7 +1,9 @@
 ﻿using Autofac;
+using Grbus.WebShop.Application.Common;
 using Grbus.WebShop.Domain.Aggregates.Baskets.Repository;
 using Grbus.WebShop.Domain.Aggregates.Customers.Repository;
 using Grbus.WebShop.Domain.Aggregates.Products;
+using Grbus.WebShop.Domain.Common;
 using Grbus.WebShop.Infrastructure.Baskets;
 using Grbus.WebShop.Infrastructure.Customers;
 using Grbus.WebShop.Infrastructure.Products;
@@ -32,6 +34,14 @@ namespace Grbus.WebShop.Infrastructure.Common
             builder.RegisterType<BasketRepository>().As<IBasketRepository>().InstancePerLifetimeScope();
             builder.RegisterType<CustomerRepository>().As<ICustomerRepository>().InstancePerLifetimeScope();
 
+            //
+            builder.RegisterType<UnitOfWork>().As<IUnitOfWork>().InstancePerLifetimeScope();
+            
+            //
+            builder.RegisterType<DomainEventService>().As<IDomainEventService>().InstancePerLifetimeScope();
+
+            // 
+            builder.RegisterType<MemoryCachingService>().As<ICachingService>().InstancePerLifetimeScope();
 
         }
     }

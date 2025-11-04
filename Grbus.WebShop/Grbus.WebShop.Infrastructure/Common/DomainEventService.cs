@@ -1,4 +1,5 @@
-﻿using Grbus.WebShop.Domain.Common;
+﻿using Grbus.WebShop.Application.Common;
+using Grbus.WebShop.Domain.Common;
 using MediatR;
 using Microsoft.Extensions.Logging;
 
@@ -18,7 +19,12 @@ namespace Grbus.WebShop.Infrastructure.Common
         public async Task Publish(DomainEvent domainEvent)
         {
             _logger.LogInformation("Publishing domain event of type {DomainEventType} occurred on {OccurredOn}", domainEvent.GetType().Name, domainEvent.OccurredOn);
-            await _publisher.Publish(domainEvent);
+            await _publisher.Publish(GetNotificationCorrespondingToDomainEvent(domainEvent));
+        }
+
+        private INotification GetNotificationCorrespondingToDomainEvent(DomainEvent domainEvent)
+        {
+            return (INotification)Activator.CreateInstance(typeof(DomainEventNotification<>).MakeGenericType(domainEvent.GetType()), domainEvent)!;
         }
     }
 }

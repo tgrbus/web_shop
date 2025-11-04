@@ -16,10 +16,15 @@ namespace Grbus.WebShop.Application.Customers.Commands
     {
         private readonly ICustomerRepository _customerRepo;
         private readonly ILogger<CreateNewCustomerCommandHandler> _logger;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public CreateNewCustomerCommandHandler(ICustomerRepository customerRepo, ILogger<CreateNewCustomerCommandHandler> logger)
+        public CreateNewCustomerCommandHandler(
+            ICustomerRepository customerRepo, 
+            IUnitOfWork unitOfWork,
+            ILogger<CreateNewCustomerCommandHandler> logger)
         {
             _customerRepo = customerRepo;
+            _unitOfWork = unitOfWork;
             _logger = logger;
         }
 
@@ -34,6 +39,7 @@ namespace Grbus.WebShop.Application.Customers.Commands
                     LastName = command.LastName
                 };
                 await _customerRepo.InsertAsync(customer);
+                await _unitOfWork.SaveChangesAsync();
                 return Result.Success();
             }
             catch (Exception ex)

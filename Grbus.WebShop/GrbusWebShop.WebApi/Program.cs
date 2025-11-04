@@ -1,11 +1,30 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using GrbusWebShop.WebApi;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
+using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
+var configuration = builder.Configuration;
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
+builder.Host
+    .ConfigureContainer<ContainerBuilder>(builder => builder
+        .RegisterConfiguration(configuration)
+        .ConfigureContainer(configuration))
+    .ConfigureLogging(logginBuilder =>
+    {
+        logginBuilder.ClearProviders();
+        logginBuilder.SetMinimumLevel(LogLevel.Debug);
+    }).UseNLog();
+        
+    
+
 
 // Add services to the container.
 //builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -40,7 +59,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 //});
 
 
-builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
+//builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -61,7 +80,7 @@ app.UseHttpsRedirection();
 //app.UseAuthentication();
 //app.UseMvc();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 
 app.MapControllers();

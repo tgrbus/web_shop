@@ -2,6 +2,7 @@
 using Grbus.WebShop.Domain.Aggregates.Baskets.Events;
 using Grbus.WebShop.Domain.Aggregates.Baskets.Repository;
 using Grbus.WebShop.Infrastructure.Common;
+using Microsoft.EntityFrameworkCore;
 
 namespace Grbus.WebShop.Infrastructure.Baskets
 {
@@ -16,7 +17,9 @@ namespace Grbus.WebShop.Infrastructure.Baskets
 
         public async Task<Basket?> GetBasketByIdAsync(string email)
         {
-            var basket = await _context.Set<Basket>().FindAsync(email);           
+            var basket = await _context.Set<Basket>().AsQueryable()
+                        .Include(n => n.BasketItems)
+                        .FirstOrDefaultAsync(n => n.CustomerEmail == email);
             return basket;
         }
 

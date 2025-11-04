@@ -36,7 +36,7 @@ namespace Grbus.WebShop.Application.Products.Queries
                 return Result<ProductDto>.Failure(ErrorLists.RecordDoesNotExistForGivenKey);
             }
 
-            else return Result<ProductDto>.Success(new ProductDto
+            cachedProduct = new ProductDto
             {
                 Id = product.Id,
                 Name = product.Name,
@@ -45,7 +45,10 @@ namespace Grbus.WebShop.Application.Products.Queries
                 Price = product.Price,
                 StockQuantity = product.StockQuantity,
                 TaxPercentage = product.TaxPercentage,
-            });
+            };
+            await _cachingService.Set($"product_{query.Id}", cachedProduct);
+            
+            return Result<ProductDto>.Success(cachedProduct);
         }
     }
 }

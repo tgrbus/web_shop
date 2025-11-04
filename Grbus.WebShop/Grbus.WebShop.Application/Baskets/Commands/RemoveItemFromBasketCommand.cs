@@ -7,7 +7,7 @@ namespace Grbus.WebShop.Application.Baskets.Commands
 {
     public record RemoveItemFromBasketCommand : IRequest<Result>
     {
-        public required string BasketEmail { get; init; }
+        public required string CustomerEmail { get; init; }
         public int ProductId { get; init; }
     }
 
@@ -24,7 +24,7 @@ namespace Grbus.WebShop.Application.Baskets.Commands
 
         public async Task<Result> Handle(RemoveItemFromBasketCommand command, CancellationToken ct)
         {
-            var basket = await _basketRepo.GetBasketByIdAsync(command.BasketEmail);
+            var basket = await _basketRepo.GetBasketByIdAsync(command.CustomerEmail);
             if (basket == null)
             {
                 return Result.Failure(ErrorLists.BasketNotFound);

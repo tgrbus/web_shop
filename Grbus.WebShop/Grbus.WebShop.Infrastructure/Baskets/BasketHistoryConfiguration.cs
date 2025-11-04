@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Grbus.WebShop.Infrastructure.Baskets
 {
-    internal class BasketHistoryConfiguration : IEntityTypeConfiguration<BasketHistory
+    internal class BasketHistoryConfiguration : IEntityTypeConfiguration<BasketHistory>
     {
         public void Configure(EntityTypeBuilder<BasketHistory> builder)
         {
