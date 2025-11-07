@@ -1,7 +1,13 @@
-﻿using Grbus.WebShop.Application.Products.Queries;
+﻿using Grbus.WebShop.Application.Common;
+using Grbus.WebShop.Application.Products.Commands;
+using Grbus.WebShop.Application.Products.DTOs;
+using Grbus.WebShop.Application.Products.Queries;
+using Grbus.WebShop.Domain.Common;
 using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace GrbusWebShop.WebApi.Controllers.V1
 {
@@ -13,22 +19,29 @@ namespace GrbusWebShop.WebApi.Controllers.V1
 
         public ProductsController(IMediator mediator)
         {
-            _mediator = mediator;
+           _mediator = mediator;
         }
 
         [HttpGet]
+        [ProducesResponseType(typeof(PaginatedList<ProductDto>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> Get([FromBody] GetAllProductsWithPaginationQuery query)
         {
             var result = await _mediator.Send(query);
 
-            if(result.IsSuccess)
-            {
-                return Ok(result.Value);
-            }
-            else
-            {
-                return BadRequest(result.Error);
-            }
+            return result.IsSuccess ? Ok(result.Value) : BadRequest(result.Error);
+        }
+
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
+        [Authorize]
+        [Authorize(Roles = "Product.Admin")]
+        public async Task<IActionResult> Post([FromBody] CreateProductCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return result.IsSuccess ? Ok() : BadRequest(result.Error);
         }
     }
 }

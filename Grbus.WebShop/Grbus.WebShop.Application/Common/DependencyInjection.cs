@@ -6,7 +6,12 @@ namespace Grbus.WebShop.Application.Common
     public class DependencyInjection : Module
     {
         protected override void Load(ContainerBuilder builder)
-        { 
+        {
+
+            builder.RegisterGeneric(typeof(UnhandledExceptionBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+
             builder.RegisterAssemblyTypes(typeof(ApplicationLayer).Assembly)
                 .Where(n => n.IsClosedTypeOf(typeof(IRequestHandler<>)))
                 .AsImplementedInterfaces()
@@ -22,9 +27,7 @@ namespace Grbus.WebShop.Application.Common
                 .AsImplementedInterfaces()
                 .InstancePerLifetimeScope();
 
-            builder.RegisterGeneric(typeof(LoggingBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(UnhandledExceptionBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
-            builder.RegisterGeneric(typeof(ValidationBehavior<,>)).As(typeof(IPipelineBehavior<,>)).InstancePerLifetimeScope();
+
         }
     }
 }

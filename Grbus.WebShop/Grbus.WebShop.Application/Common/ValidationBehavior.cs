@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Grbus.WebShop.Domain.Common;
 using MediatR;
 
 namespace Grbus.WebShop.Application.Common
@@ -21,7 +22,7 @@ namespace Grbus.WebShop.Application.Common
 
                 if(failures.Any())
                 {
-                    throw new Exception("Validation exceptions: " + string.Join(", ", failures.SelectMany(n => n.ErrorMessage)));
+                    throw new Exception("Validation exceptions: " + string.Join(", ", failures.Select(n => n.ErrorMessage)));
                 }
             }
             return await next();

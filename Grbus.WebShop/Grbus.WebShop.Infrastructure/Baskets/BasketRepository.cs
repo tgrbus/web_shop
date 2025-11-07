@@ -44,5 +44,10 @@ namespace Grbus.WebShop.Infrastructure.Baskets
             };
             await _context.Set<BasketHistory>().AddAsync(history);
         }
+
+        public IQueryable<BasketHistory> GetHistory(string email)
+        {
+            return _context.Set<BasketHistory>().Where(n => n.Email == email).AsQueryable();
+        }
     }
 }

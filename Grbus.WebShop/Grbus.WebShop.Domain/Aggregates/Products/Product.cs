@@ -1,4 +1,6 @@
-﻿namespace Grbus.WebShop.Domain.Aggregates.Products
+﻿using Grbus.WebShop.Domain.Common;
+
+namespace Grbus.WebShop.Domain.Aggregates.Products
 {
     public class Product
     {
@@ -9,5 +11,17 @@
         public decimal Price { get; set; }
         public decimal TaxPercentage { get; set; }
         public int StockQuantity { get; set; }
+
+        //public Result ChangeQuantity(int quantity)
+        //{
+        //    if(StockQuantity + quantity < 0)
+        //    {
+        //        return Result.Failure();
+        //    }
+
+        //    StockQuantity += quantity;
+
+        //    if(S)
+        //}
     }
 }

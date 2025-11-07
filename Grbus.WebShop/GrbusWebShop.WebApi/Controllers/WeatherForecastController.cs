@@ -22,8 +22,15 @@ namespace GrbusWebShop.WebApi.Controllers
         }
 
         [HttpGet(Name = "GetWeatherForecast")]
+        [Authorize(Roles = "Product.Admin")]
         public IEnumerable<WeatherForecast> Get()
         {
+            var identity = this.User.Identity;
+            var cc = User.IsInRole("Product.Admin");
+            var xx = User.Claims.Select(n => n.Type).ToArray();
+            var yy = User.Claims.Select(n => n.Value).ToArray();
+
+
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
                 Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),

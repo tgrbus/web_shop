@@ -12,5 +12,7 @@ namespace Grbus.WebShop.Domain.Aggregates.Baskets.Repository
         void UpdateBasket(Basket basket);
 
         Task AddHistoryAsync(BasketItemChangedEvent @event);
+
+        IQueryable<BasketHistory> GetHistory(string email);
     }
 }

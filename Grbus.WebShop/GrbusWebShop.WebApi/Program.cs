@@ -1,12 +1,16 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using FluentValidation;
+using Grbus.WebShop.Application.Common;
 using GrbusWebShop.WebApi;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.Google;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Identity.Web;
+using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,44 +26,36 @@ builder.Host
         logginBuilder.ClearProviders();
         logginBuilder.SetMinimumLevel(LogLevel.Debug);
     }).UseNLog();
-        
-    
 
 
-// Add services to the container.
-//builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-//    .AddMicrosoftIdentityWebApi(builder.Configuration.GetSection("AzureAd"));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>();
 
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>();
-
-
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    //options.DefaultChallengeScheme = GoogleDefaults.AuthenticationScheme;
-    options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
+builder.Services.AddValidatorsFromAssembly(typeof(ApplicationLayer).Assembly);
+builder.Services.AddAuthentication()
     .AddCookie()
-    .AddGoogle(options =>
+    .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, jwtOptions =>
+    {
+        jwtOptions.Authority = configuration["Authentication:AzureAD:Authority"];
+        jwtOptions.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateAudience = true,
+            ValidAudience = configuration["Authentication:AzureAD:Audience"],
+            ValidateLifetime = true,
+            RoleClaimType = "http://schemas.microsoft.com/ws/2008/06/identity/claims/role"
+        };
+    })
+    .AddGoogle(GoogleDefaults.AuthenticationScheme, googleOptions =>
+    {
+        googleOptions.ClientId = configuration["Authentication:Google:ClientId"];
+        googleOptions.ClientSecret = configuration["Authentication:Google:ClientSecret"];
+    });
+
+builder.Services.AddAuthorization(options =>
 {
-    options.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-    options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-    options.CallbackPath = "/signin-google";
+    var defaultAuthPolicyBuilder = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme, GoogleDefaults.AuthenticationScheme);
+    defaultAuthPolicyBuilder = defaultAuthPolicyBuilder.RequireAuthenticatedUser();
+    options.DefaultPolicy = defaultAuthPolicyBuilder.Build();
 });
-
-builder.Services.ConfigureApplicationCookie(options =>
-{    
-});
-
-//builder.Services.AddAuthentication().AddGoogle(googleOptions =>
-//{
-//    googleOptions.ClientId = builder.Configuration["Authentication:Google:ClientId"];
-//    googleOptions.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"];
-//});
-
-
-//builder.Services.AddMvc(options => options.EnableEndpointRouting = false);
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -77,8 +73,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-//app.UseAuthentication();
-//app.UseMvc();
+app.UseAuthentication();
 
 app.UseAuthorization();
 

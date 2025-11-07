@@ -14,7 +14,7 @@ namespace Grbus.WebShop.Application.Common
             try
             {
                 return await next();
-            }
+            }            
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Exception for request {request}", request);

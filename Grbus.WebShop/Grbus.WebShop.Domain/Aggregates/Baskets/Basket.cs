@@ -64,6 +64,10 @@ namespace Grbus.WebShop.Domain.Aggregates.Baskets
                 {
                     RemoveProduct(productId);
                 }
+                else
+                {
+                    DomainEvents.Add(new BasketItemChangedEvent(existingItem));
+                }
             }            
         }
     }
