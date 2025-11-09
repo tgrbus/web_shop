@@ -23,6 +23,7 @@ namespace GrbusWebShop.WebApi.Controllers.V1
         }
 
         [HttpGet]
+        [Authorize]
         [ProducesResponseType(typeof(PaginatedList<ProductDto>), (int)HttpStatusCode.OK)]
         [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> Get([FromBody] GetAllProductsWithPaginationQuery query)
