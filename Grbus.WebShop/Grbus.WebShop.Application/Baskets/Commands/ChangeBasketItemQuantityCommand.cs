@@ -8,7 +8,7 @@ namespace Grbus.WebShop.Application.Baskets.Commands
     public record ChangeBasketItemQuantityCommand : IRequest<Result>
     {
         public required string CustomerEmail { get; init; }
-        public int ProductID { get; init; }
+        public int ProductId { get; init; }
         public int Quantity { get; init; }
     }
 
@@ -28,10 +28,10 @@ namespace Grbus.WebShop.Application.Baskets.Commands
             var basket = await _basketRepo.GetBasketByIdAsync(command.CustomerEmail);
             if(basket == null)
             {
-                return Result.Failure(ErrorLists.BasketNotFound);
+                return Result.Failure(ApplicationErrors.BasketNotFound);
             }
 
-            basket.IncreaseOrDecreaseQuantity(command.ProductID, command.Quantity);
+            basket.IncreaseOrDecreaseQuantity(command.ProductId, command.Quantity);
             await _unitOfWork.SaveChangesAsync();
 
             return Result.Success();

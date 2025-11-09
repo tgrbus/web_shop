@@ -22,7 +22,7 @@ namespace Grbus.WebShop.Infrastructure.Products
             
             // Add initial data
             builder.HasData(
-                new Product
+                new Product(100)
                 {
                     Id = 1,
                     SKU = "SKU001",
@@ -30,17 +30,15 @@ namespace Grbus.WebShop.Infrastructure.Products
                     Description = "This is a sample product.",
                     Price = 19.99m,
                     TaxPercentage = 25m,
-                    StockQuantity = 100
                 },
-                new Product
+                new Product(50)
                 {
                     Id = 2,
                     SKU = "SKU002",
                     Name = "Sample Product 02",
                     Description = "This is another sample product.",
                     Price = 29.99m,
-                    TaxPercentage = 25m,
-                    StockQuantity = 50
+                    TaxPercentage = 25m
                 });
         }
     }

@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 using Microsoft.Extensions.Logging;
 using System.Data;
+using System.Threading.Tasks;
 
 namespace Grbus.WebShop.Infrastructure.Common
 {
@@ -31,25 +32,13 @@ namespace Grbus.WebShop.Infrastructure.Common
             _transaction ??= _context.Database.BeginTransaction(isolationLevel);
         }
 
-        public void CommitTransaction()
+        public async Task CommitTransaction()
         {
             if (_transaction == null)
             {
                 throw new InvalidOperationException("No active transaction to commit.");
             }
-            try
-            {
-                _transaction.Commit();
-                _transaction = null;
-            }
-            catch(Exception ex)
-            {
-                _transaction?.Rollback();
-                _transaction?.Dispose();
-                _transaction = null;
-                _logger.LogError(ex, "Error committing transaction");
-                throw;
-            }
+            await SaveChangesAsync();
         }        
 
         public void RollbackTransaction()

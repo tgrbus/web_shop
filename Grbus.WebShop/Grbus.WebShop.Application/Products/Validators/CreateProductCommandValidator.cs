@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using Grbus.WebShop.Application.Products.Commands;
 
-namespace Grbus.WebShop.Application.Products.Commands
+namespace Grbus.WebShop.Application.Products.Validators
 {
     public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
     {

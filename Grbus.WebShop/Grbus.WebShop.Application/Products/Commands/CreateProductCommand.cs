@@ -29,14 +29,13 @@ namespace Grbus.WebShop.Application.Products.Commands
 
         public async Task<Result> Handle(CreateProductCommand command, CancellationToken cancellationToken)
         {
-            var product = new Product
+            var product = new Product(command.StockQuantity ?? 0)
             {
                 Name = command.Name,
                 SKU = command.SKU,
                 Description = command.Description,
                 Price = command.Price,
-                TaxPercentage = command.TaxPercentage,
-                StockQuantity = command.StockQuantity
+                TaxPercentage = command.TaxPercentage                
             };
 
             try
@@ -48,7 +47,7 @@ namespace Grbus.WebShop.Application.Products.Commands
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error occurred while creating product: {command}", command);
-                return Result.Failure(ErrorLists.DatabaseException);
+                return Result.Failure(ApplicationErrors.DatabaseException);
             }
         }
     }

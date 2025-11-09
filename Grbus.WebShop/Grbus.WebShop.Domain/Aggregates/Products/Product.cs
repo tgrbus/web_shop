@@ -10,18 +10,28 @@ namespace Grbus.WebShop.Domain.Aggregates.Products
         public string? Description { get; set; }
         public decimal Price { get; set; }
         public decimal TaxPercentage { get; set; }
-        public int StockQuantity { get; set; }
+        public int StockQuantity { get; private set; } = 0;
 
-        //public Result ChangeQuantity(int quantity)
-        //{
-        //    if(StockQuantity + quantity < 0)
-        //    {
-        //        return Result.Failure();
-        //    }
+        public Product(int stockQuantity)
+        {
+            StockQuantity = stockQuantity;
+        }
 
-        //    StockQuantity += quantity;
+        public Result ChangeStockQuantity(int quantity)
+        {
+            if (StockQuantity + quantity < 0)
+            {
+                return Result.Failure(DomainErrors.StockShortage);
+            }
 
-        //    if(S)
-        //}
+            StockQuantity += quantity;
+            return Result.Success();           
+        }
+
+        public Result SetStockQuantity(int quantity)
+        {
+            StockQuantity = quantity;
+            return Result.Success();
+        }
     }
 }

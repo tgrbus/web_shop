@@ -45,7 +45,7 @@ namespace Grbus.WebShop.Application.Customers.Commands
             catch (Exception ex)
             {
                 _logger.LogError(ex, ex.Message);
-                return Result.Failure(ErrorLists.DatabaseException);
+                return Result.Failure(ApplicationErrors.DatabaseException);
             }
         }
     }

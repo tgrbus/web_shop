@@ -4,7 +4,7 @@
     {
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
         void CreateTransaction(System.Data.IsolationLevel isolationLevel = System.Data.IsolationLevel.ReadCommitted);
-        void CommitTransaction();
+        Task CommitTransaction();
         void RollbackTransaction();
     }
 }

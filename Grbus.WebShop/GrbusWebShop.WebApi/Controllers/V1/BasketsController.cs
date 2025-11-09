@@ -1,6 +1,7 @@
 ﻿using Grbus.WebShop.Application.Baskets.Commands;
 using Grbus.WebShop.Application.Baskets.DTOs;
 using Grbus.WebShop.Application.Baskets.Queries;
+using Grbus.WebShop.Application.Common;
 using Grbus.WebShop.Domain.Common;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -31,7 +32,8 @@ namespace GrbusWebShop.WebApi.Controllers.V1
         }
 
         [HttpPatch("additems")]
-
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> AddItemsToBasket([FromBody] AddItemsToBasketCommand command)
         {
             var result = await _mediator.Send(command);
@@ -39,6 +41,8 @@ namespace GrbusWebShop.WebApi.Controllers.V1
         }
 
         [HttpPatch("changequantity")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> ChangeQuantity([FromBody] ChangeBasketItemQuantityCommand command)
         {
             var result = await _mediator.Send(command);
@@ -46,6 +50,8 @@ namespace GrbusWebShop.WebApi.Controllers.V1
         }
 
         [HttpPatch("removeitem")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> RemoveItem([FromBody] RemoveItemFromBasketCommand command)
         {
             var result = await _mediator.Send(command);
@@ -53,7 +59,19 @@ namespace GrbusWebShop.WebApi.Controllers.V1
             return result.IsSuccess ? Ok() : BadRequest(result.Error);  
         }
 
+        [HttpPatch("checkout")]
+        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
+        public async Task<IActionResult> CheckoutBasket([FromBody] CheckoutBasketCommand command)
+        {
+            var result = await _mediator.Send(command);
+
+            return result.IsSuccess ? Ok() : BadRequest(result.Error);
+        }
+
         [HttpGet("history")]
+        [ProducesResponseType(typeof(PaginatedList<BasketHistoryDto>), (int)HttpStatusCode.OK)]
+        [ProducesErrorResponseType(typeof(Error))]
         public async Task<IActionResult> GetHistory([FromBody] GetBasketHistoryWithPaginationQuery query)
         {
             var result = await _mediator.Send(query);

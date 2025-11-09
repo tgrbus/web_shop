@@ -27,7 +27,7 @@ namespace Grbus.WebShop.Application.Baskets.Commands
             var basket = await _basketRepo.GetBasketByIdAsync(request.CustomerEmail);
             if (basket == null)
             {
-                return Result.Failure(ErrorLists.BasketNotFound);
+                return Result.Failure(ApplicationErrors.BasketNotFound);
             }
 
             basket.AddProduct(request.ProductId, request.Quantity);

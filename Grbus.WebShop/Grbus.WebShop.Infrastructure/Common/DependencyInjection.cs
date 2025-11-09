@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using Grbus.WebShop.Application.Common;
 using Grbus.WebShop.Domain.Aggregates.Baskets.Repository;
+using Grbus.WebShop.Domain.Aggregates.Baskets.Services;
 using Grbus.WebShop.Domain.Aggregates.Customers.Repository;
 using Grbus.WebShop.Domain.Aggregates.Products;
 using Grbus.WebShop.Domain.Common;
@@ -8,6 +9,7 @@ using Grbus.WebShop.Infrastructure.Baskets;
 using Grbus.WebShop.Infrastructure.Customers;
 using Grbus.WebShop.Infrastructure.Products;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 
 namespace Grbus.WebShop.Infrastructure.Common
@@ -49,6 +51,8 @@ namespace Grbus.WebShop.Infrastructure.Common
             // 
             builder.RegisterType<MemoryCachingService>().As<ICachingService>().InstancePerLifetimeScope();
 
+            // domain services
+            builder.RegisterType<CheckoutService>().AsSelf().InstancePerLifetimeScope();
         }
     }
 }

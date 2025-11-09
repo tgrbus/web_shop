@@ -33,7 +33,7 @@ namespace Grbus.WebShop.Application.Products.Queries
 
             if (product == null)
             {
-                return Result<ProductDto>.Failure(ErrorLists.RecordDoesNotExistForGivenKey);
+                return Result<ProductDto>.Failure(ApplicationErrors.RecordDoesNotExistForGivenKey);
             }
 
             cachedProduct = new ProductDto

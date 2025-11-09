@@ -31,7 +31,7 @@ namespace Grbus.WebShop.Application.Baskets.Queries
 
             if(basket == null)
             {
-                return Result<BasketDto>.Failure(ErrorLists.BasketNotFound);
+                return Result<BasketDto>.Failure(ApplicationErrors.BasketNotFound);
             }            
 
             var products = _productRepo.GetQueriable().Where(n => basket.BasketItems.Select(x => x.ProductId).Contains(n.Id))

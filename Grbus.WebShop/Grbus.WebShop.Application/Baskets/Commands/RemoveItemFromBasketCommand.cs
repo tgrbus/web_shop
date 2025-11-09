@@ -27,7 +27,7 @@ namespace Grbus.WebShop.Application.Baskets.Commands
             var basket = await _basketRepo.GetBasketByIdAsync(command.CustomerEmail);
             if (basket == null)
             {
-                return Result.Failure(ErrorLists.BasketNotFound);
+                return Result.Failure(ApplicationErrors.BasketNotFound);
             }
             basket.RemoveProduct(command.ProductId);
             await _unitOfWork.SaveChangesAsync();
